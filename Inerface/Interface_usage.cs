@@ -24,9 +24,6 @@ class Eraser : MyInterface
 
 class Student
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-
     MyInterface Interfacel;
     public Student (MyInterface interface_obj)
     {
