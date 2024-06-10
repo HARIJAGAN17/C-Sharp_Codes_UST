@@ -1,14 +1,17 @@
-Why do we need a Delegate?
-In class, we create its object, which is an instance, but in delegate, when we create an instance, that is also referred to as a delegate (which means whatever you do, you will get a delegate).
+using System;
 
-The delegate does not know or care about the class of the object it references. Any object will do; all that matters is that the method's argument types and return types match the delegate's. This makes delegates perfectly suited for "anonymous" invocation.
+class Deligate
+{
+    public delegate int DeligatePointer(int number);
+    public static void Main(String[] args)
+    {
+    DeligatePointer d = new DeligatePointer(TestFunction);
+    int result = d(22);
+    Console.WriteLine($"I'm called through the deligate:{result}");
+    }
 
-What are the benefits of delegates?
-In simple words, delegates are object-oriented, type-safe, and very secure, as they ensure that the signature of the method being called is correct. Delegates make event handling simple and easy.
-
-What are the types of delegates in C#?
-There are two types of delegates in C#, singlecast delegates and multiplecast delegates.
-
-Singlecast delegate: Singlecast delegate points to a single method at a time. The delegate is assigned to a single method at a time. They are derived from System.Delegate class.
-Multicast Delegate: When a delegate is wrapped with more than one method, that is known as a multicast delegate.
-In C#, delegates are multicast, meaning they can point to more than one function at a time. They are derived from System.MulticastDelegate class.
+    public static int TestFunction(int number)
+    {
+        return number;
+    }
+}
