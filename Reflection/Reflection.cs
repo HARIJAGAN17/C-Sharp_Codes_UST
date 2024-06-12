@@ -30,7 +30,13 @@ class ReflectionTest
 {
     public static void Main(String[] args)
     {
+	   //Assembly ass = Assembly.Load("namespace"); to load              	   //assembly
+
         Type T = Type.GetType("FirstC_.Customer");
+
+	   //var obj  = Activator.CreateInstance(T); created obj
+	   
+
 
         Console.WriteLine(T.Name);
         Console.WriteLine(T.FullName);
