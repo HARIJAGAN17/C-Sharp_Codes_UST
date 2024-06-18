@@ -1,0 +1,202 @@
+using System.Data.SqlTypes;
+using System.Net.Http.Headers;
+using System.Reflection.Metadata;
+using System.Security.Cryptography;
+
+namespace Assignment_14_6_2024
+{
+
+
+    class Shop
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ManufacturedBy { get; set; }
+        public double Price { get; set; }
+
+    }
+
+    class Customer
+    {
+
+
+        private Dictionary<int, Shop> products = new Dictionary<int, Shop>();
+        private List<Dictionary<int, Shop>> AllProducts;
+        private int startId;
+
+        public Customer()
+        {
+
+            AllProducts = new List<Dictionary<int, Shop>>();
+            startId = 999;
+
+        }
+
+        public void AddProduct(Shop s)
+        {
+            if (CheckList(AllProducts, s))
+            {
+                throw new Exception("Product Already Exists!");
+            }
+            else
+            {
+                Dictionary<int, Shop> IndividualPrdocut = new Dictionary<int, Shop>();
+                startId++;
+                IndividualPrdocut.Add(startId, s);
+                AllProducts.Add(IndividualPrdocut);
+                Console.WriteLine("\nProduct Added");
+            }
+        }
+
+        static bool CheckList(List<Dictionary<int, Shop>> AllProducts, Shop s)
+        {
+
+            foreach (Dictionary<int, Shop> Product in AllProducts)
+            {
+                foreach (var individual in Product)
+                {
+                    if (individual.Value.Name == s.Name)
+                    {
+                        return true;
+                    }
+
+                }
+            }
+
+            return false;
+        }
+
+        public void DisplayProducts()
+        {
+            if (AllProducts.Count > 0)
+            {
+                foreach (Dictionary<int, Shop> Product in AllProducts)
+                {
+                    foreach (var individual in Product)
+                    {
+                        Console.WriteLine($"ID-{individual.Key} Name-{individual.Value.Name} ManufactureBy-{individual.Value.ManufacturedBy} Price-{individual.Value.Price}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("The product list is empty");
+            }
+        }
+
+        public void DisplayGreater()
+        {
+            if (AllProducts.Count > 0)
+            {
+
+                foreach (Dictionary<int, Shop> Product in AllProducts)
+                {
+                    foreach (var individual in Product)
+                    {
+                        if (individual.Value.Price > 1000)
+                        {
+                            Console.WriteLine($"ID-{individual.Key} Name-{individual.Value.Name} ManufactureBy-{individual.Value.ManufacturedBy} Price-{individual.Value.Price}");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("The product list is empty");
+            }
+        }
+
+        public void DeleteALl()
+        {
+
+            if (AllProducts.Count > 0)
+            {
+                AllProducts.Clear();
+                startId = 999;
+                Console.WriteLine("All products deleted sucessfully");
+            }
+            else
+            {
+                Console.WriteLine("Already product list is empty");
+            }
+
+
+        }
+
+
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Customer customer = new Customer();
+
+            while (true)
+            {
+                Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("\nPlease Select from the options below:\n");
+                Console.WriteLine("1.Add the products \n2.Display the Products \n3.Display products price greater than Rs.1000\n4.To Clear the products list\n5.To exit application\n");
+                Console.WriteLine("Enter the Choice:");
+                
+                try
+                {
+                    int choice;
+                    choice = Convert.ToInt32(Console.ReadLine());
+
+                    switch (choice)
+                    {
+                        case 1:
+
+                            Console.WriteLine("Enter the product name:");
+                            String name = Console.ReadLine();
+                            Console.WriteLine("Enter manufactured Date ex:10/02/2024:");
+                            String manufacture = Console.ReadLine();
+                            Console.WriteLine("Enter description about the product:");
+                            String description = Console.ReadLine();
+                            Console.WriteLine("Enter the price of product:");
+                            double price = Convert.ToDouble(Console.ReadLine());
+
+                            Shop newShop = new Shop()
+                            {
+
+                                Name = name,
+                                ManufacturedBy = manufacture,
+                                Description = description,
+                                Price = price,
+
+                            };
+
+                            customer.AddProduct(newShop);
+                            break;
+                        case 2:
+                            Console.WriteLine("Here the products in the list:");
+                            customer.DisplayProducts();
+                            break;
+                        case 3:
+                            Console.WriteLine("Here the products which price is greater than 1000rs in the list:");
+                            customer.DisplayGreater();
+                            break;
+                        case 4:
+                            customer.DeleteALl();
+                            break;
+                        case 5:
+                            Environment.Exit(0);
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice input please try again");
+                            break;
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+
+            }
+
+        }
+    }
+}
